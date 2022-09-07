@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import { createError } from "../error.js";
 
 export const update = async (req, res, next) => {
+  //CHECK IF THE PARAMS ID MATCHS THE USER ID
   if (req.params.id === req.user.id) {
     try {
       const updatedUser = await User.findByIdAndUpdate(
@@ -21,6 +22,7 @@ export const update = async (req, res, next) => {
 };
 
 export const deleteUser = async (req, res, next) => {
+  //CHECK IF THE PARAMS ID MATCHS THE USER ID
   if (req.params.id === req.user.id) {
     try {
       await User.findByIdAndDelete(req.params.id);
@@ -33,6 +35,7 @@ export const deleteUser = async (req, res, next) => {
   }
 };
 export const getUser = async (req, res, next) => {
+  //CHECK IF THE PARAMS ID MATCHS THE USER ID
   if (req.params.id === req.user.id) {
     try {
       const user = await User.findById(req.params.id);
@@ -43,11 +46,15 @@ export const getUser = async (req, res, next) => {
   }
 };
 export const subscribe = async (req, res, next) => {
+  // CHECK IF THE PARAMS ID MATCHS THE USER ID
   if (req.params.id === req.user.id) {
     try {
+      // FIND THE USER AND ADDS ANOTHER ID TO THE SUBSCRIBEDUSERS ARRAY
       await User.findById(req.user.id, {
         $push: { subscribedUsers: req.params.id },
       });
+
+      // FIND THE USER THATS MATCHS WITH THE PARAMS ID AND INCREASE ITS SUBSCRIBERS BY ONE
       await User.findByIdAndUpdate(req.params.id, {
         $inc: { subscribers: 1 },
       });
@@ -60,9 +67,12 @@ export const subscribe = async (req, res, next) => {
 export const unsubscribe = async (req, res, next) => {
   if (req.params.id === req.user.id) {
     try {
+      // FIND THE USER AND REMOVE ANOTHER ID TO THE SUBSCRIBEDUSERS ARRAY
       await User.findById(req.user.id, {
         $pull: { subscribedUsers: req.params.id },
       });
+
+      // FIND THE USER THATS MATCHS WITH THE PARAMS ID AND DECREASE ITS SUBSCRIBERS BY ONE
       await User.findByIdAndUpdate(req.params.id, {
         $inc: { subscribers: -1 },
       });
