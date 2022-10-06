@@ -4,6 +4,12 @@ import {
   updateVideo,
   deleteVideo,
   getVideo,
+  addView,
+  trend,
+  random,
+  sub,
+  getByTag,
+  search,
 } from "../controllers/video.js";
 import { verifyToken } from "../verifyToken.js";
 
@@ -25,10 +31,18 @@ router.delete("/:id", verifyToken, deleteVideo);
 router.get("/find/:id", getVideo);
 
 //Increase Views
+router.put("/view/:id", addView);
 
-router.put("/view");
-router.put("/trend");
-router.put("/random");
-router.put("/sub");
+//Get trending videos
+router.get("/trend", trend);
+
+//Get random videos
+router.get("/random", random);
+
+router.get("/sub", verifyToken, sub);
+
+router.get("/tags", getByTag);
+
+router.get("/search", search);
 
 export default router;
