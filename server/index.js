@@ -6,6 +6,7 @@ import commentRoutes from "./routes/comments.js";
 import videoRoutes from "./routes/videos.js";
 import authRoutes from "./routes/auth.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 const app = express();
 dotenv.config();
@@ -21,6 +22,7 @@ const connect = () => {
     });
 };
 
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api/users", userRoutes);
@@ -40,5 +42,5 @@ app.use((err, req, res, next) => {
 
 app.listen(8800, () => {
   connect();
-  console.log("Connected to server!");
+  console.log("Connected to server, port: 8800!");
 });

@@ -37,13 +37,12 @@ export const deleteUser = async (req, res, next) => {
 };
 export const getUser = async (req, res, next) => {
   //CHECK IF THE PARAMS ID MATCHS THE USER ID
-  if (req.params.id === req.user.id) {
-    try {
-      const user = await User.findById(req.params.id);
-      res.status(200).json(user);
-    } catch (err) {
-      next(err);
-    }
+
+  try {
+    const user = await User.findById(req.params.id);
+    res.status(200).json(user);
+  } catch (err) {
+    next(err);
   }
 };
 
