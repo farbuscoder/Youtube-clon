@@ -2,6 +2,7 @@ import { React, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
 import { loginFailure, loginSuccess, loginStart } from "../redux/userSlice";
 
 const Container = styled.div`
@@ -80,7 +81,15 @@ const SignIn = () => {
     dispatch(loginStart());
 
     try {
-      const res = await axios.post(`${url}/auth/signin`, { name, password });
+      const res = await axios.post(
+        `${url}/auth/signin`,
+        { name, password },
+        {
+          withCredentials: true,
+          credentials: "include",
+        }
+      );
+
       dispatch(loginSuccess(res.data));
     } catch (error) {
       dispatch(loginFailure());

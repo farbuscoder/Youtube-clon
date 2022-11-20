@@ -4,6 +4,10 @@ import bcrypt from "bcryptjs";
 import { createError } from "../error.js";
 import jwt from "jsonwebtoken";
 
+export const access = {
+  token: "",
+};
+
 export const signup = async (req, res, next) => {
   try {
     const salt = bcrypt.genSaltSync(10);
@@ -34,11 +38,18 @@ export const signin = async (req, res, next) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT);
 
+    access.token = token;
+
+    console.log(access);
+
+    console.log("Este es el token desde auth.js: " + token);
+
     const { password, ...others } = user._doc;
 
     res
-      .cookie("access_token", token, {
-        httpOnly: true,
+      .cookie("jwt", token, {
+        httpOnly: false,
+        secure: true,
       })
       .status(200)
       .json(others);
